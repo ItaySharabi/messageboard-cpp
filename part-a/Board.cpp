@@ -10,19 +10,16 @@ namespace ariel{
         // Either create a constructor to 
         // set values for MAX_ROWS/COLS 
         // or defaultly set it to MaxValue.
-        MAX_ROWS = MAX_COLS = INT16_MAX;
+        
     }
 
-    // Board::Board(unsigned int rows, unsigned int columns) {
-    //     cout << "New instance of Board is created!" << endl;
+    Board::~Board() {
         
-    //     cout << "rows " << rows << endl;
-    //     cout << "cols " << columns << endl;
-    // }
+    }
 
     string Board::show() {
-        cout << "show() invoked" << endl;
-        return "";
+        
+        return "show() invoked";
     }
 
     void Board::post(unsigned int row, unsigned int column, Direction d, string message) {
@@ -30,10 +27,10 @@ namespace ariel{
     }
 
     string Board::read(unsigned int row, unsigned int column, Direction d, unsigned int length) {
-        cout << "read() invoked" << endl;
-        return "";
-    }
 
+        return "read() invoked";
+    }
+    
 
 
     
