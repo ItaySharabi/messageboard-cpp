@@ -7,7 +7,7 @@ namespace ariel{
 
     Board::Board() {
         cout << "New instance of Board is created!" << endl;
-        MAX_ROWS = MAX_COLS = 0;
+        MAX_ROWS = MAX_COLS = 1;
         MIN_COLS = MIN_ROWS = UINT32_MAX;
 
         board = vector<vector<char>>(INITIAL_SIZE, vector<char>(INITIAL_SIZE, '_'));
@@ -21,11 +21,16 @@ namespace ariel{
 
         string out;
 
-        cout << "show() " << MIN_ROWS << ", " << MAX_COLS << endl;
+        cout << "showing from(" << MIN_ROWS << ", " << MIN_COLS << "), (" 
+        << MAX_ROWS << ", " << MAX_COLS << ")" << endl;
 
-        for (unsigned int i = MIN_ROWS; i <= MAX_ROWS; i++) {
-            for (unsigned int j = MIN_COLS; j <= MAX_COLS; j++) {
-                out += board.at(i).at(j);
+        for (unsigned int i = MIN_ROWS; i < MAX_ROWS; i++) {
+            for (unsigned int j = MIN_COLS; j < MAX_COLS; j++) {
+                char val = board.at(i).at(j);
+                // if (val == '\0' || val == ' ' || val == '\n' || val == '\t') {
+
+                out += val;
+
             }
             out += "\n";
         }
@@ -34,54 +39,74 @@ namespace ariel{
     }
 
     void Board::post(unsigned int row, unsigned int column, Direction d, const string &message) {
-        cout << "post() invoked" << endl;
-        cout << row << ", " << column << endl;
-        // if(row < 0 || row > MAX_ROWS || column < 0 || column > MAX_COLS) return;
-        if(row < MIN_ROWS) {MIN_ROWS = row;}
-        // if(row > MAX_ROWS) {MAX_ROWS = row;} // resize
-        if(column < MIN_COLS) {MIN_COLS = column;}
-        if(column > MAX_COLS) {MAX_COLS = column;}
+        cout << "-------Inside Post(" << row << ", "
+        << column << ", " << message << ")---------------" << endl;
 
-        cout << "post ?" <<endl;
+        unsigned int msg_size = message.size();
 
-        if(d == Direction::Horizontal) {
-            for(unsigned int i = 0; i < message.size(); i++) {
-                board.at(row).at(i) = message.at(i);
-                cout << board.at(row).at(i) << endl;
+        if(row >= INITIAL_SIZE && row < MIN_ROWS) {
+            MIN_ROWS = row;
+            cout << "Min Row is now " << row << endl;
+        }
+        if(column >= INITIAL_SIZE && column < MIN_COLS) {
+            MIN_COLS = column;
+            cout << "Min Col is now " << column << endl;
+        }
+
+        // if(d == Direction::Vertical) {
+
+            if(row >= MAX_ROWS) { // If message size or position is out of 
+                // MAX_ROWS = msg_size + row;  // board frame
+                // RESIZE ROW COUNT
+                
+                MAX_ROWS = d == Direction::Vertical ? row + msg_size : row;
+                MAX_ROWS += 1;
+                
+                // post(row, column, d, message);
+            } 
+            // else { // within current board frame
+            //     // post(i, j, message)
+            // }
+
+        // } else { // Direction is Horizontal
+            if(column >= MAX_COLS) {
+                MAX_COLS = d == Direction::Horizontal ? column + msg_size : column;
+                MAX_COLS += 1;
+            
+                // post(row, column, d, message);
+            }
+        // }
+        board.resize(MAX_ROWS, vector<char>());
+
+        for(int i = 0; i < MAX_ROWS; i++) {
+            board.at(i).resize(MAX_COLS, '_');
+            // board.resize(MAX_ROWS, vector<char>(MAX_COLS, '_'));
+        }
+
+        cout << "resized" << endl;
+        cout << "board.size() = " << board.size() << ", board.at(1).size() = " << board.at(1).size() << endl;
+
+        int index = 0;
+        if (d == Direction::Horizontal) {
+            cout << "Posting Horizontally on row: " << row <<  endl;
+            for (int j = column; index < msg_size && j < MAX_COLS-1; j++) {
+                
+                board.at(row).at(j) = message.at(index++);
             }
         } else {
-            cout << "Implement Vertical!" << endl;
-
+            cout << "Posting Vertically on column: " << column <<  endl;
+            cout << "row " << row << "\t MAX_ROWS" << MAX_ROWS << endl;
+            for (int i = row; index < msg_size && i < MAX_ROWS-1; i++) {
+                board.at(i).at(column) = message.at(index++);
+                cout << board.at(i).at(column) << ", ";
+            }
         }
+        cout << "---------FINISHED POST()-----------" << endl;
     }
 
     string Board::read(unsigned int row, unsigned int column, Direction d, unsigned int length) {
 
         return "read() invoked";
     }
-
-    bool Board::resize (unsigned int i, unsigned int j, Direction d, unsigned int message_length){
-
-        if((i < UINT32_MAX || j < UINT32_MAX) && (i > 0 && j > 0)) {
-            
-            if(d == Direction::Horizontal) {
-                for(unsigned int k = 0; k < MAX_ROWS; k++) {
-                    board.at(k).resize(i + message_length);
-                }
-                cout << "New #Rows: " << i + message_length << endl;
-                return true;
-            } else {
-                board.resize(j + message_length);
-                cout << "New #Cols: " << j + message_length << endl;
-                return true;
-            }
-        }
-
-        return false;
-
-    }
-    
-
-
-    
+   
 };

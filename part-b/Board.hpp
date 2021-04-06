@@ -12,12 +12,13 @@ namespace ariel{
     class Board{
         private:
 
-        unsigned int INITIAL_SIZE = 10;
+        unsigned int INITIAL_SIZE = 1;
+        const char underscore = '_';
         unsigned int MAX_ROWS, MAX_COLS;
         unsigned int MIN_ROWS, MIN_COLS;
         vector<vector<char>> board;
 
-        bool resize(unsigned int n, unsigned int m, Direction d, unsigned int message_length);
+        // bool my_resize(unsigned int n, unsigned int m, Direction d, unsigned int message_length);
         
         public:
             // Either create a constructor to 
