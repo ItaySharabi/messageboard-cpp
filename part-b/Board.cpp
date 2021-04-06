@@ -29,8 +29,6 @@ namespace ariel{
             }
             out += "\n";
         }
-
-        cout << out << endl;
     }
 
     void Board::post(unsigned int row, unsigned int column, Direction d, const string &message) {
@@ -77,7 +75,6 @@ namespace ariel{
         } else {
             for (unsigned int i = row; index < msg_size && i < MAX_ROWS-1; i++) {
                 board.at(i).at(column) = message.at(index++);
-                cout << board.at(i).at(column) << ", ";
             }
         }
     }
