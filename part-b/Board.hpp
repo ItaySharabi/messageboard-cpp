@@ -12,7 +12,7 @@ namespace ariel{
     class Board{
         private:
 
-        unsigned int INITIAL_SIZE = 1;
+        unsigned int INITIAL_SIZE = 0;
         const char underscore = '_';
         unsigned int MAX_ROWS, MAX_COLS;
         unsigned int MIN_ROWS, MIN_COLS;
