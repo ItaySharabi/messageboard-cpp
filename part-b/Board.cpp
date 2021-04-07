@@ -1,7 +1,4 @@
 #include "Board.hpp"
-// #include <iostream>
-// using namespace std;
-
 
 namespace ariel{
 
@@ -29,6 +26,8 @@ namespace ariel{
             }
             out += "\n";
         }
+        cout << out << endl;
+        
     }
 
     void Board::post(unsigned int row, unsigned int column, Direction d, const string &message) {
