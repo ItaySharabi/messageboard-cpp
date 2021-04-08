@@ -104,7 +104,7 @@ int main() {
                     string out = board.read(i, j, direction, length);
                     cout << "--------\nContent: \n" << out << "\n\n--------" << endl;;
                 } catch (exception e) {
-                    cout << e.what();
+                    cout << e.what() << endl;
                 }
                 break;
             
@@ -115,7 +115,7 @@ int main() {
                     board.post(0, 0, Direction::Horizontal, snowman(k));
                     cout << "\n\n";
                 } catch (exception e) {
-                    cout << e.what();
+                    cout << e.what() << endl;
                 }
                 break;
             case 4:
