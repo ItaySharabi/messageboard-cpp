@@ -5,6 +5,7 @@
 #include <ctime>
 #include <unistd.h>
 
+#define MAX_LINE 1024
 
 
 // #include <stdlib.h>
@@ -36,36 +37,21 @@ int main() {
     Board board;
     const Direction horiz = Direction::Horizontal;
     const Direction vert = Direction::Vertical;
-    const int error_count = 5;
+    int exit = 0;
     string s;
-
     
-    rand_snowman_input();
+        
+    cout << "\n\nWelcome to my Dynamic Messageboard!" << endl;
 
-    try {
-        s = snowman(123412321);
-
-    } catch (exception e) {
-        cout << e.what();
-    }
-    
-    s = snowman(12312312);
-
-
-
-    
-    cout << "Welcome to my Dynamic Messageboard!" << endl;
-
-    cout << "You can choose input from 1 - 4 and practice with the messageboard:" << endl;
+    cout << "You can choose input from 1 - 5 and practice with the messageboard:" << endl;
 
     unsigned int user_choice = 0;
 
     unsigned int i, j;
-    string message;
     int d;
     Direction direction;
 
-    while(true) {
+    while(!exit) {
         board.show();
         cout << "1: post(i, j, Direction, Text)" << endl;    
         cout << "2: read(i, j, (Horizontal=0, Vertical=1), Length) - Get text from (i,j), 'Length' chars long" << endl;    
@@ -79,11 +65,11 @@ int main() {
                 cin >> i;
                 cout << "j = ";
                 cin >> j;
-                cout << "Direction: 0 - Horizontal\n\t   1 - Vertical" << endl;
+                cout << "Direction: 1 - Horizontal\n\t   2 - Vertical" << endl;
                 cin >> d;
 
                 switch(d) {
-                    case 1:
+                    case 2:
                         direction = Direction::Vertical;
                         break;
                     default: 
@@ -91,12 +77,37 @@ int main() {
                         break;
                 }
                 cout << "Enter Text: \n";
-                cin >> message;
+                char message[MAX_LINE];
+                getchar();
+                cin.getline(message, MAX_LINE);
                 board.post(i, j, direction, message);
-                continue;
+                break;
+            
+            case 2:
+                cout << "Read text from the messageboard: " << endl;
+                cout << "i = "; cin >> i; cout << "j = ";
+                cout << "Direction: 1 - Horizontal\n\t   2 - Vertical" << endl;
+                cin >> d;
+                switch(d) {
+                    case 2:
+                        direction = Direction::Vertical;
+                        break;
+                    default: 
+                        direction = Direction::Horizontal;
+                        break;
+                }
+                int length;
+                cout << "Reading length: "; cin >> length;
+                try {
+                    string out = board.read(i, j, direction, length);
+                    cout << out;
+                } catch (exception e) {
+                    cout << e.what();
+                }
+                break;
             
             case 3:
-                cout << "Random snowman at your request!" << endl;
+                cout << "Random snowman at your request! Shown at (0,0)" << endl;
                 try {
                     int k = rand_snowman_input();
                     cout << k << endl;
@@ -104,13 +115,13 @@ int main() {
                 } catch (exception e) {
                     cout << e.what();
                 }
-                continue;
+                break;
             case 4:
                 int snow_input;
                 cout << "Enter 8 digits in range 1-4" << endl;
                 cin >> snow_input;
-                cout << "Where do u wanna put it? (i, j)" << endl;
-                cout << "i = ";cin >> i; cout << "j = "; cin >> j;
+                cout << "Where do u wanna put it? (i, 1)" << endl;
+                cout << "i = ";cin >> i;
                 try {
                     board.post(i, 1, horiz, snowman(snow_input));
                 } catch(exception e) {
@@ -119,10 +130,12 @@ int main() {
                 continue;
             case 5:
                 cout << "Quitting" << endl;
-                return -1;
+                exit = 1;
+                break;
             default:
                 continue;
         }
+        
     }
 
 
